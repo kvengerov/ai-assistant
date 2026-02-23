@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+  backend:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.api
+    container_name: test-ai-backend
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    networks:
+      - test-ai-network
+
   test-ai-prod:
     build:
       context: .
@@ -9,7 +22,11 @@ services:
     ports:
       - "80:80"
     restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - test-ai-network
 
 networks:
-  default:
+  test-ai-network:
     name: test-ai-network
