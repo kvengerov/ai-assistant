@@ -6,7 +6,10 @@ import asyncio
 import os
 
 app = FastAPI()
-client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY", ""))
+client = AsyncOpenAI(
+    base_url="http://192.168.0.230:1234/v1",
+    api_key="lm-studio"  # Required but not used for local server
+)
 
 class ChatRequest(BaseModel):
     prompt: str
@@ -15,7 +18,7 @@ class ChatRequest(BaseModel):
 async def chat_endpoint(request: ChatRequest):
     async def stream_generator():
         response = await client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="qwen/qwen3-vl-4b",
             messages=[{"role": "user", "content": request.prompt}],
             stream=True
         )
