@@ -1,59 +1,130 @@
 # TestNgAi
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.4.
+A full-stack AI chat application built with Angular 21 (frontend) and FastAPI (backend), designed to connect with local AI models via LM Studio.
 
-## Development server
+## Overview
 
-To start a local development server, run:
+This project provides a real-time chat interface that communicates with local LLM (Large Language Model) servers using the OpenAI-compatible API. It supports streaming responses for an interactive chat experience.
 
-```bash
-ng serve
+## Tech Stack
+
+- **Frontend**: Angular 21 with TypeScript
+- **Backend**: FastAPI (Python)
+- **AI Model**: Qwen/Qwen3-VL-4B (via LM Studio)
+- **Containerization**: Docker & Docker Compose
+
+## Project Structure
+
+```
+test-ng-ai/
+├── backend/               # FastAPI backend
+│   ├── src/
+│   │   └── main.py       # Main API application
+│   ├── requirements.txt  # Python dependencies
+│   └── start.sh          # Startup script
+├── frontend/             # Angular frontend
+│   ├── src/
+│   │   └── app/
+│   │       ├── components/
+│   │       │   └── ai-chat/    # Chat component
+│   │       └── services/
+│   │           └── ai-service.ts  # API service
+│   └── package.json
+├── docker-compose.yml    # Development environment
+├── docker-compose.prod.yml  # Production environment
+└── package.json          # Monorepo scripts
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Prerequisites
 
-## Code scaffolding
+- Node.js 18+
+- Python 3.10+
+- Docker & Docker Compose
+- LM Studio (running locally with OpenAI-compatible API)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Configuration
 
-```bash
-ng generate component component-name
+### Backend Environment
+
+Create a `.env` file in the `backend/` directory based on `.env.example`:
+
+```env
+LM_STUDIO_URL=http://192.168.0.230:1234/v1
+LM_STUDIO_API_KEY=lm-studio
+MODEL_NAME=qwen/qwen3-vl-4b
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Docker Environment
 
-```bash
-ng generate --help
+Docker Compose uses default values for LM Studio settings. To customize, create a `.env` file in the project root:
+
+```env
+LM_STUDIO_URL=http://192.168.0.230:1234/v1
+LM_STUDIO_API_KEY=lm-studio
+MODEL_NAME=qwen/qwen3-vl-4b
 ```
 
-## Building
+### LM Studio Setup
 
-To build the project run:
+1. Download and install [LM Studio](https://lmstudio.ai/)
+2. Start LM Studio and download the Qwen/Qwen3-VL-4B model
+3. Start the local server on port 1234
 
-```bash
-ng build
-```
+## Running the Application
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### With Docker (Development)
 
 ```bash
-ng test
+npm start
 ```
 
-## Running end-to-end tests
+This starts both the frontend (port 4200) and backend (port 3000).
 
-For end-to-end (e2e) testing, run:
+### With Docker (Production)
 
 ```bash
-ng e2e
+docker-compose -f docker-compose.prod.yml up --build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Local Development
 
-## Additional Resources
+**Backend:**
+```bash
+cd backend
+pip install -r requirements.txt
+python src/main.py
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Frontend:**
+```bash
+cd frontend
+npm install
+npm start
+```
+
+## API Endpoints
+
+| Method | Endpoint   | Description              |
+|--------|------------|--------------------------|
+| POST   | /api/chat  | Send chat message        |
+
+### Chat Request Format
+
+```json
+{
+  "messages": [
+    { "role": "user", "content": "Hello!" }
+  ]
+}
+```
+
+## Features
+
+- Real-time streaming AI responses
+- Conversation history persistence
+- Docker support for easy deployment
+- Angular Signals for reactive state management
+
+## License
+
+ISC

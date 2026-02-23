@@ -27,7 +27,9 @@ services:
       - "3000:3000"
     restart: unless-stopped
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LM_STUDIO_URL=${LM_STUDIO_URL:-http://192.168.0.230:1234/v1}
+      - LM_STUDIO_API_KEY=${LM_STUDIO_API_KEY:-lm-studio}
+      - MODEL_NAME=${MODEL_NAME:-qwen/qwen3-vl-4b}
 
 networks:
   default:
