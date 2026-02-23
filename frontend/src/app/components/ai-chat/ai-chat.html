@@ -3,7 +3,9 @@
 <div class="chat-container">
   <div class="message-box">
     {{ aiService.currentMessage() }}
-    <span *ngIf="aiService.isGenerating()" class="cursor">|</span>
+    @if (aiService.isGenerating()) {
+      <span class="cursor">|</span>
+    }
   </div>
 
   <input #userInput type="text" (keyup.enter)="aiService.askAi(userInput.value)">

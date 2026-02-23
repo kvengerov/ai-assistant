@@ -1,13 +1,10 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
 import { AiChat } from "./components/ai-chat/ai-chat";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AiChat],
+  imports: [AiChat],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('test-ng-ai');
-}
+export class App {}
