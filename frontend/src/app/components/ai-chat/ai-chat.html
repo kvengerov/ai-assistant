@@ -1,13 +1,30 @@
-<p>ai-chat works!</p>
-
 <div class="chat-container">
-  <div class="message-box">
-    {{ aiService.currentMessage() }}
+  <!-- Conversation History -->
+  <div class="chat-history">
+    @for (msg of aiService.getMessages(); track $index) {
+      <div class="message" [class.user]="msg.role === 'user'" [class.assistant]="msg.role === 'assistant'">
+        <strong>{{ msg.role === 'user' ? 'You' : 'AI Assistant' }}:</strong> {{ msg.content }}
+      </div>
+    }
+    
+    <!-- Current streaming response -->
     @if (aiService.isGenerating()) {
-      <span class="cursor">|</span>
+      <div class="message assistant">
+        <strong>AI:</strong> {{ aiService.currentMessage() }}<span class="cursor">|</span>
+      </div>
     }
   </div>
 
-  <input #userInput type="text" (keyup.enter)="aiService.askAi(userInput.value)">
-  <button (click)="aiService.askAi(userInput.value)">Спросить ИИ</button>
+  <!-- Input Area -->
+  <div class="input-area">
+    <input #userInput type="text" (keyup.enter)="onSubmit(userInput)" placeholder="Ask AI...">
+    <button (click)="onSubmit(userInput)" [disabled]="aiService.isGenerating()">
+      @if (aiService.isGenerating()) {
+        ...
+      } @else {
+        Отправить
+      }
+    </button>
+    <button (click)="clearChat()" class="clear-btn">Clear</button>
+  </div>
 </div>

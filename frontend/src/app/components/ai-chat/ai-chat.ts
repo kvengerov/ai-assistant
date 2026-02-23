@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef } from '@angular/core';
 import { AiService } from '../../services/ai-service';
 
 @Component({
@@ -9,5 +9,18 @@ import { AiService } from '../../services/ai-service';
 })
 export class AiChat {
   public aiService: AiService = inject(AiService);
-
+  
+  @ViewChild('userInput') userInput!: ElementRef<HTMLInputElement>;
+  
+  onSubmit(input: HTMLInputElement) {
+    const value = input.value.trim();
+    if (value && !this.aiService.isGenerating()) {
+      this.aiService.askAi(value);
+      input.value = '';
+    }
+  }
+  
+  clearChat() {
+    this.aiService.clearHistory();
+  }
 }
