@@ -1,0 +1,17 @@
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Copy backend package files
+COPY backend/package*.json ./backend/
+
+# Install dependencies
+WORKDIR /app/backend
+RUN npm install
+
+# Copy backend project files
+COPY backend/ .
+
+EXPOSE 8080
+
+CMD ["npm", "start"]

@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  test-ai-prod:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.prod
+    container_name: test-ai-prod
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+networks:
+  default:
+    name: test-ai-network
